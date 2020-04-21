@@ -59,8 +59,6 @@ class ReplyController extends Controller
     {
         $reply->update($request->all());
         return response('Updated',Response::HTTP_ACCEPTED);
-
-
     }
 
     /**
