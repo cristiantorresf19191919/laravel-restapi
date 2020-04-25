@@ -81,6 +81,9 @@ php artisan make model:model Model/Question
 
 php artisan make:model -mfc Model/Question
 php artisan make:controller ReplyController --api create without functions
+php artisan make:middleware JWT
+KERNET.PHP
+'jwt' => \App\Http\Middleware\JWT::class
 
 
 php artisan migrate

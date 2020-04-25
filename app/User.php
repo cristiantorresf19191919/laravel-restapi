@@ -6,9 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Model\Question;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Question\Question as QuestionQuestion;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
@@ -39,15 +41,30 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-     public function replies()
-     {
-         return $this->hasMany('App\Reply') ;
-     }
+    public function replies()
+    {
+        return $this->hasMany('App\Reply');
+    }
 
-     public function questions()
-     {
-         return $this->hasMany(Question::class);
-     }
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
 
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function setPasswordAttribute($password)
+    {
+        if (!empty($password)) {
+            $this->attributes['password'] = Hash::make($password);
+        }
+    }
 }
